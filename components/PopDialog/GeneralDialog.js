@@ -1,13 +1,25 @@
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useMemo, useRef, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useMemo, useRef } from "react";
+import { BackHandler, StyleSheet, View } from "react-native";
 
 const GeneralDialog = (props) => {
   const sheetRef = useRef(null);
-  const [IsOpen, setIsOpen] = useState(true);
 
-  const snapPoints = useMemo(() => ["35%", "45%"], []);
+  const snapPoints = useMemo(() => props.SnapPointers, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      sheetRef.current.close();
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <BottomSheet

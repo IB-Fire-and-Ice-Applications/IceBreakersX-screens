@@ -7,12 +7,14 @@ const SettingsCard = (props) => {
       {props.touchableAction === true ? (
         <TouchableOpacity
           onPress={() => props.PressUAction(props.CardUid)}
-          style={styles.SettingsCard}
+          style={[styles.SettingsCard, { borderRadius: props.CardRound }]}
         >
           {props.children}
         </TouchableOpacity>
       ) : (
-        <View style={styles.SettingsCard}>{props.children}</View>
+        <View style={[styles.SettingsCard, { borderRadius: props.CardRound }]}>
+          {props.children}
+        </View>
       )}
     </>
   );
@@ -28,7 +30,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     minHeight: 59,
-    borderRadius: 8,
     marginBottom: 18,
   },
 });

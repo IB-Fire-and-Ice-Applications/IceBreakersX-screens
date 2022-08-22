@@ -1,7 +1,7 @@
 import { Octicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { BackHandler, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PaypalSVGIc from "../../assets/svg/paypal-26.svg";
 import BitcoinSVG from "../../assets/svg/wrapped-bitcoin-wbtc-icon.svg";
@@ -14,6 +14,7 @@ const PaymentSettings = ({ navigation: { goBack } }) => {
   const [HeaderBack, setHeaderBack] = useState(false);
   const [IsOpenSchemeMode, setIsOpenSchemeMode] = useState(false);
   const [DialogCloserx, setDialogCloserx] = useState(false);
+  const [PInteract, setPInteract] = useState(0);
   const [DialogTitle, setDialogTitle] = useState("");
   const [CrdPress, setCrdPress] = useState(0);
 
@@ -31,11 +32,33 @@ const PaymentSettings = ({ navigation: { goBack } }) => {
     }
   }, [DialogCloserx]);
 
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     if (!DialogCloserx) {
+  //       if (PInteract === 0) {
+  //         return false;
+  //       } else {
+  //         setDialogCloserx(true);
+  //         return true;
+  //       }
+  //     } else {
+  //       return false;
+  //     }
+  //   };
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, [DialogCloserx, PInteract]);
+
   useEffect(() => {
     if (CrdPress > 0) {
       if (DialogTitleDesc[CrdPress]) {
         setDialogTitle(DialogTitleDesc[CrdPress]);
       }
+      setPInteract(1);
       setDialogCloserx(false);
       setIsOpenSchemeMode(true);
     }
@@ -60,18 +83,18 @@ const PaymentSettings = ({ navigation: { goBack } }) => {
           flex: 1,
         }}
       >
-        <Header
-          BackHeader={true}
-          BackNavigator={setHeaderBack}
-          title="Manage payment account"
-        />
-
         <SafeAreaView
           style={{
             width: "100%",
             flex: 1,
           }}
         >
+          <Header
+            BackHeader={true}
+            BackNavigator={setHeaderBack}
+            title="Manage payment account"
+          />
+
           <ScrollView
             style={{
               paddingTop: 0,
@@ -105,6 +128,7 @@ const PaymentSettings = ({ navigation: { goBack } }) => {
               </View>
               {/* Credit/debit Control */}
               <SettingsCard
+                CardRound={8}
                 touchableAction={true}
                 CardUid={1}
                 PressUAction={setCrdPress}
@@ -158,6 +182,7 @@ const PaymentSettings = ({ navigation: { goBack } }) => {
 
               {/* Paypal Control */}
               <SettingsCard
+                CardRound={8}
                 touchableAction={true}
                 CardUid={2}
                 PressUAction={setCrdPress}
@@ -208,6 +233,7 @@ const PaymentSettings = ({ navigation: { goBack } }) => {
 
               {/* Bitcoin Control */}
               <SettingsCard
+                CardRound={8}
                 touchableAction={true}
                 CardUid={3}
                 PressUAction={setCrdPress}
@@ -260,6 +286,7 @@ const PaymentSettings = ({ navigation: { goBack } }) => {
         <PaymentOptContent
           setDialogCloserx={setDialogCloserx}
           DialogTitle={DialogTitle}
+          AcctType={CrdPress}
         />
       )}
     </>

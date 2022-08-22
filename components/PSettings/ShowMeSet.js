@@ -4,8 +4,8 @@ import { Button, RadioButton } from "react-native-paper";
 import metrics from "../../theme/metrics";
 import { GDialog } from "../PopDialog";
 
-const Drkmode = (props) => {
-  const [value, setValue] = useState("first");
+const ShowMeSet = (props) => {
+  const [value, setValue] = useState("second");
 
   const ContinueDMode = () => {
     props.setDialogCloserx(true);
@@ -48,7 +48,7 @@ const Drkmode = (props) => {
               fontWeight: "bold",
             }}
           >
-            Dark Mode
+            Show Me
           </Text>
         </View>
         <View>
@@ -62,7 +62,7 @@ const Drkmode = (props) => {
               }}
             >
               <RadioButton.Item
-                label="Follow System"
+                label="All"
                 uncheckedColor="#fff"
                 style={{
                   height: 60,
@@ -74,7 +74,7 @@ const Drkmode = (props) => {
               />
 
               <RadioButton.Item
-                label="Normal Mode"
+                label="Women"
                 uncheckedColor="#fff"
                 style={{
                   height: 60,
@@ -86,7 +86,7 @@ const Drkmode = (props) => {
               />
 
               <RadioButton.Item
-                label="Dark Mode"
+                label="Men"
                 uncheckedColor="#fff"
                 style={{
                   height: 60,
@@ -131,6 +131,6 @@ const Drkmode = (props) => {
   );
 };
 
-export default Drkmode;
+export default ShowMeSet;
 
 const styles = StyleSheet.create({});

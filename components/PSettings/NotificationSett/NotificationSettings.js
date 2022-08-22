@@ -1,63 +1,65 @@
-import { Octicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
-  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { Avatar, TouchableRipple } from "react-native-paper";
+import { Switch } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Logo from "../../assets/logo/logo-white.png";
-import ScanSVG from "../../assets/svg/scan-15.svg";
-import metrics from "../../theme/metrics";
-import SettingsCard from "../Card/SettingsCard";
-import Header from "../Header";
-import Drkmode from "./Drkmode";
+import metrics from "../../../theme/metrics";
+import SettingsCard from "../../Card/SettingsCard";
+import Header from "../../Header";
+import { Octicons } from "@expo/vector-icons";
+import NotiSwitch from "./NotiSwitch";
 
-const SettingsHome = ({ navigation }) => {
-  const [IsOpenSchemeMode, setIsOpenSchemeMode] = useState(false);
-  const [DialogCloserx, setDialogCloserx] = useState(false);
-  const [CrdPress, setCrdPress] = useState(0);
+const NotificationSettings = ({ navigation: { goBack } }) => {
   const [HeaderBack, setHeaderBack] = useState(false);
-  const [ShowAlert, setShowAlert] = useState(true);
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const [CrdPress, setCrdPress] = useState(0);
+  const [isSwitchOn, setIsSwitchOn] = React.useState(true);
+  const [isSwitchOnFriendRequest, setIsSwitchOnFriendRequest] =
+    React.useState(true);
+  const [isSwitchOnFollowers, setIsSwitchOnFollowers] = React.useState(false);
+  const [isSwitchOnProfileLike, setIsSwitchOnProfileLike] =
+    React.useState(true);
+  const [DialogCloserx, setDialogCloserx] = useState(false);
+
+  const [NotificationSwitch, setNotificationSwitch] = useState(false);
+
+  const onToggleSwitch = (switchType) => {
+    if (switchType === 1) {
+      setIsSwitchOn(!isSwitchOn);
+    } else if (switchType === 2) {
+      setIsSwitchOnFriendRequest(!isSwitchOnFriendRequest);
+    } else if (switchType === 3) {
+      setIsSwitchOnFollowers(!isSwitchOnFollowers);
+    } else if (switchType === 4) {
+      setIsSwitchOnProfileLike(!isSwitchOnProfileLike);
+    }
+  };
+
+  const NotificationToggler = (notiType) => {
+    setCrdPress(notiType);
+    setDialogCloserx(false);
+    setNotificationSwitch(true);
+  };
 
   useEffect(() => {
     if (DialogCloserx) {
       setCrdPress(0);
-      setIsOpenSchemeMode(false);
+      setNotificationSwitch(false);
     }
   }, [DialogCloserx]);
 
   useEffect(() => {
-    if (CrdPress > 0) {
-      if (CrdPress == 3) {
-        setDialogCloserx(false);
-        setIsOpenSchemeMode(true);
-      } else if (CrdPress == 1) {
-        navigation.navigate("SProfile");
-        setCrdPress(0);
-      } else if (CrdPress == 4) {
-        navigation.navigate("SPayment");
-        setCrdPress(0);
-      } else if (CrdPress == 2) {
-        navigation.navigate("SLanguage");
-        setCrdPress(0);
-      } else if (CrdPress == 8) {
-        navigation.navigate("NSettings");
-        setCrdPress(0);
-      }
+    if (HeaderBack) {
+      goBack();
     }
-  }, [CrdPress]);
-
+  }, [HeaderBack]);
   return (
     <>
-      {/* {ShowAlert && <GAlert />} */}
       <LinearGradient
         colors={["#400A3A", "#4285F4"]}
         location={[0.8, 98.4]}
@@ -76,114 +78,49 @@ const SettingsHome = ({ navigation }) => {
           }}
         >
           <Header
-            BackHeader={false}
+            BackHeader={true}
             BackNavigator={setHeaderBack}
-            title="Settings"
+            title="Notifications"
           />
 
           <ScrollView
             style={{
               paddingTop: 0,
-              paddingHorizontal: 20,
+              paddingHorizontal: 10,
               flex: 1,
             }}
           >
             <View
               style={{
-                paddingBottom: 60,
+                paddingBottom: 20,
               }}
             >
-              {/* Profile Card */}
               <View
                 style={{
+                  height: 80,
                   flex: 1,
-                  height: 70,
-                  marginVertical: 20,
-                  flexDirection: "row",
-                  width: metrics.screenWidth,
+                  justifyContent: "center",
                   alignItems: "center",
-                  position: "relative",
                 }}
-                rippleColor="rgba(0, 0, 0, .32)"
               >
-                <View
+                <Text
                   style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    width: metrics.screenWidth,
-                  }}
-                >
-                  <View
-                    style={{
-                      border: "2px solid #fff",
-                    }}
-                  >
-                    <Avatar.Image
-                      size={60}
-                      source={require("../../assets/avatar-2.png")}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      justifyContent: "center",
-                      paddingLeft: 10,
-                      alignSelf: "stretch",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        color: "rgba(255,255,255,.8)",
-                      }}
-                    >
-                      Allison Gomez
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 17,
-                        color: "rgba(255,255,255,.6)",
-                      }}
-                    >
-                      @Marcul
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    width: 50,
-                    height: 50,
-                    right: 50,
-                    flex: 1,
-                    flexDirection: "row",
+                    color: "rgba(255,255,255,.6)",
+                    fontSize: 15,
                     textAlign: "center",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    position: "absolute",
+                    paddingHorizontal: 60,
                   }}
                 >
-                  <View style={{}}>
-                    <TouchableRipple
-                      onPress={() => console.log("Pressed")}
-                      rippleColor="rgba(0, 0, 0, .1)"
-                    >
-                      <ScanSVG />
-                    </TouchableRipple>
-                    {/* <Button
-                      icon=""
-                      mode="text"
-                      onPress={() => console.log("Pressed")}
-                    >
-                      <ScanSVG />
-                    </Button> */}
-                  </View>
-                </View>
+                  Choose what activities matter to you to keep in touch with.
+                </Text>
               </View>
-
-              {/* Profile Control */}
+            </View>
+            <View>
+              {/* Message notification */}
               <SettingsCard
                 CardRound={8}
-                touchableAction={true}
-                CardUid={1}
+                touchableAction={false}
+                CardUid={2}
                 PressUAction={setCrdPress}
               >
                 <View
@@ -192,6 +129,7 @@ const SettingsHome = ({ navigation }) => {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    height: 70,
                     paddingHorizontal: 16,
                   }}
                 >
@@ -206,91 +144,28 @@ const SettingsHome = ({ navigation }) => {
                         fontSize: 17,
                       }}
                     >
-                      Account
+                      Messages
                     </Text>
-
                     <View>
                       <Text
                         style={{
                           color: "rgba(255,255,255,.3)",
                         }}
                       >
-                        Location, like, wishlist, friends, groups
+                        Someone sent you a new message
                       </Text>
                     </View>
                   </View>
-
                   <View>
-                    <Octicons
-                      name="chevron-right"
-                      size={22}
-                      color="rgba(255,255,255,.6)"
+                    <Switch
+                      value={isSwitchOn}
+                      onValueChange={() => onToggleSwitch(1)}
                     />
                   </View>
                 </View>
               </SettingsCard>
-              {/* Language Control */}
-              <SettingsCard
-                CardRound={8}
-                touchableAction={false}
-                CardUid={2}
-                PressUAction={setCrdPress}
-              >
-                <View
-                  style={{
-                    paddingHorizontal: 13,
-                    paddingTop: 10,
-                    height: 30,
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "rgba(255,255,255,.4)",
-                    }}
-                  >
-                    Preferred Language
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    height: 50,
-                    paddingHorizontal: 16,
-                    paddingBottom: 8,
-                  }}
-                  onPress={() => setCrdPress(2)}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#fff",
-                        fontSize: 17,
-                      }}
-                    >
-                      English
-                    </Text>
-                  </View>
-                  <View>
-                    <Octicons
-                      name="chevron-right"
-                      size={22}
-                      color="rgba(255,255,255,.6)"
-                    />
-                  </View>
-                </TouchableOpacity>
-              </SettingsCard>
 
-              {/* <View style={{ height: 20 }}></View> */}
-
-              {/* Payment Control */}
+              {/* Match Notifications */}
               <SettingsCard
                 CardRound={8}
                 touchableAction={false}
@@ -309,7 +184,7 @@ const SettingsHome = ({ navigation }) => {
                       color: "rgba(255,255,255,.4)",
                     }}
                   >
-                    Payment account
+                    Match notifications
                   </Text>
                 </View>
                 <TouchableOpacity
@@ -321,7 +196,7 @@ const SettingsHome = ({ navigation }) => {
                     paddingHorizontal: 16,
                     marginBottom: 19,
                   }}
-                  onPress={() => setCrdPress(4)}
+                  onPress={() => NotificationToggler(1)}
                 >
                   <View
                     style={{
@@ -334,7 +209,7 @@ const SettingsHome = ({ navigation }) => {
                         fontSize: 17,
                       }}
                     >
-                      Manage payment account
+                      New Admirers
                     </Text>
                   </View>
                   <View>
@@ -354,6 +229,7 @@ const SettingsHome = ({ navigation }) => {
                     paddingHorizontal: 16,
                     marginBottom: 13,
                   }}
+                  onPress={() => NotificationToggler(2)}
                 >
                   <View
                     style={{
@@ -366,7 +242,7 @@ const SettingsHome = ({ navigation }) => {
                         fontSize: 17,
                       }}
                     >
-                      Restore Purchases
+                      New Matches
                     </Text>
                   </View>
                   <View>
@@ -379,11 +255,11 @@ const SettingsHome = ({ navigation }) => {
                 </TouchableOpacity>
               </SettingsCard>
 
-              {/* Notification Control */}
+              {/* Friends & Followers notification */}
               <SettingsCard
                 CardRound={8}
-                touchableAction={true}
-                CardUid={8}
+                touchableAction={false}
+                CardUid={0}
                 PressUAction={setCrdPress}
               >
                 <View
@@ -393,11 +269,12 @@ const SettingsHome = ({ navigation }) => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     paddingHorizontal: 16,
+                    paddingVertical: 10,
                   }}
                 >
                   <View
                     style={{
-                      flexDirection: "row",
+                      flexDirection: "column",
                     }}
                   >
                     <Text
@@ -406,25 +283,25 @@ const SettingsHome = ({ navigation }) => {
                         fontSize: 17,
                       }}
                     >
-                      Notification settings
+                      Friend Request
                     </Text>
+                    <View>
+                      <Text
+                        style={{
+                          color: "rgba(255,255,255,.3)",
+                        }}
+                      >
+                        Someone sent you a friend request
+                      </Text>
+                    </View>
                   </View>
                   <View>
-                    <Octicons
-                      name="chevron-right"
-                      size={22}
-                      color="rgba(255,255,255,.6)"
+                    <Switch
+                      value={isSwitchOnFriendRequest}
+                      onValueChange={() => onToggleSwitch(2)}
                     />
                   </View>
                 </View>
-              </SettingsCard>
-              {/* Scheme Control */}
-              <SettingsCard
-                CardRound={8}
-                touchableAction={true}
-                CardUid={3}
-                PressUAction={setCrdPress}
-              >
                 <View
                   style={{
                     flex: 1,
@@ -432,11 +309,12 @@ const SettingsHome = ({ navigation }) => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     paddingHorizontal: 16,
+                    marginBottom: 13,
                   }}
                 >
                   <View
                     style={{
-                      flexDirection: "row",
+                      flexDirection: "column",
                     }}
                   >
                     <Text
@@ -445,24 +323,32 @@ const SettingsHome = ({ navigation }) => {
                         fontSize: 17,
                       }}
                     >
-                      Dark Mode
+                      New Follower
                     </Text>
+                    <View>
+                      <Text
+                        style={{
+                          color: "rgba(255,255,255,.3)",
+                        }}
+                      >
+                        Someone followed you
+                      </Text>
+                    </View>
                   </View>
                   <View>
-                    <Octicons
-                      name="chevron-right"
-                      size={22}
-                      color="rgba(255,255,255,.6)"
+                    <Switch
+                      value={isSwitchOnFollowers}
+                      onValueChange={() => onToggleSwitch(3)}
                     />
                   </View>
                 </View>
               </SettingsCard>
 
-              {/* Profile Control */}
+              {/* Message notification */}
               <SettingsCard
                 CardRound={8}
-                touchableAction={true}
-                CardUid={10}
+                touchableAction={false}
+                CardUid={2}
                 PressUAction={setCrdPress}
               >
                 <View
@@ -471,6 +357,7 @@ const SettingsHome = ({ navigation }) => {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    height: 70,
                     paddingHorizontal: 16,
                   }}
                 >
@@ -485,46 +372,59 @@ const SettingsHome = ({ navigation }) => {
                         fontSize: 17,
                       }}
                     >
-                      Help
+                      Profile Likes
                     </Text>
-
                     <View>
                       <Text
                         style={{
                           color: "rgba(255,255,255,.3)",
                         }}
                       >
-                        Help centre, contact us, privacy policy
+                        Someone liked your profile
                       </Text>
                     </View>
                   </View>
-
                   <View>
-                    <Octicons
-                      name="chevron-right"
-                      size={22}
-                      color="rgba(255,255,255,.6)"
+                    <Switch
+                      value={isSwitchOnProfileLike}
+                      onValueChange={() => onToggleSwitch(4)}
                     />
                   </View>
                 </View>
               </SettingsCard>
 
-              <View style={{ height: 20 }}></View>
-              {/* Logout control */}
+              {/* Match Notifications */}
               <SettingsCard
                 CardRound={8}
-                touchableAction={true}
-                CardUid={7}
+                touchableAction={false}
+                CardUid={0}
                 PressUAction={setCrdPress}
               >
                 <View
                   style={{
+                    paddingHorizontal: 13,
+                    height: 40,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "rgba(255,255,255,.4)",
+                    }}
+                  >
+                    Other notifications
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={{
                     flex: 1,
                     flexDirection: "row",
-                    justifyContent: "center",
+                    justifyContent: "space-between",
                     alignItems: "center",
                     paddingHorizontal: 16,
+                    marginBottom: 19,
                   }}
+                  onPress={() => NotificationToggler(3)}
                 >
                   <View
                     style={{
@@ -537,43 +437,62 @@ const SettingsHome = ({ navigation }) => {
                         fontSize: 17,
                       }}
                     >
-                      Logout
+                      IceBreakers Activities
                     </Text>
                   </View>
-                </View>
-              </SettingsCard>
-              <View
-                style={{
-                  height: 80,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Image
-                  source={Logo}
+                  <View>
+                    <Octicons
+                      name="chevron-right"
+                      size={22}
+                      color="rgba(255,255,255,.6)"
+                    />
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
                   style={{
-                    width: 40,
-                    height: 40,
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingHorizontal: 16,
+                    marginBottom: 13,
                   }}
-                />
-                <Text
-                  style={{
-                    color: "rgba(255,255,255,.4)",
-                  }}
+                  onPress={() => NotificationToggler(4)}
                 >
-                  Version 1.0.01
-                </Text>
-              </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#fff",
+                        fontSize: 17,
+                      }}
+                    >
+                      Trending Bars
+                    </Text>
+                  </View>
+                  <View>
+                    <Octicons
+                      name="chevron-right"
+                      size={22}
+                      color="rgba(255,255,255,.6)"
+                    />
+                  </View>
+                </TouchableOpacity>
+              </SettingsCard>
             </View>
           </ScrollView>
         </SafeAreaView>
       </LinearGradient>
-
-      {IsOpenSchemeMode && <Drkmode setDialogCloserx={setDialogCloserx} />}
+      {NotificationSwitch && (
+        <NotiSwitch CrdPress={CrdPress} setDialogCloserx={setDialogCloserx} />
+      )}
     </>
   );
 };
 
-export default SettingsHome;
+export default NotificationSettings;
 
 const styles = StyleSheet.create({});

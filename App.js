@@ -5,6 +5,7 @@ import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const theme = {
   ...DefaultTheme,
@@ -21,11 +22,13 @@ export default function App() {
         flex: 1,
       }}
     >
-      <PaperProvider theme={theme}>
-        <TailwindProvider>
-          <RootNavigator />
-        </TailwindProvider>
-      </PaperProvider>
+      <SafeAreaProvider>
+        <PaperProvider theme={theme}>
+          <TailwindProvider>
+            <RootNavigator />
+          </TailwindProvider>
+        </PaperProvider>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

@@ -2,7 +2,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { SHome, SPayment, SProfile } from "../components/PSettings";
+import { SHome, SLanguage, SPayment, SProfile } from "../components/PSettings";
+import NotificationSettings from "../components/PSettings/NotificationSett/NotificationSettings";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,17 @@ const SettingScreen = () => {
           name="SProfile"
           screenOptions={{ presentation: "modal" }}
           component={SProfile}
+        />
+        <Stack.Screen
+          name="SLanguage"
+          screenOptions={{ presentation: "modal" }}
+          component={SLanguage}
+        />
+
+        <Stack.Screen
+          name="NSettings"
+          screenOptions={{ presentation: "modal" }}
+          component={NotificationSettings}
         />
         <Stack.Screen
           name="SPayment"

@@ -2,14 +2,13 @@ import { Octicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import {
-  Image,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import Logo from "../assets/logo/logo-white.png";
+import metrics from "../theme/metrics";
 
 const Header = (props) => {
   const goBackHeader = () => {
@@ -21,25 +20,31 @@ const Header = (props) => {
     <>
       <StatusBar
         animated={true}
-        backgroundColor="#3C0D3B"
+        backgroundColor="#400A3A"
         barStyle="light-content"
       />
       <View style={styles.HeaderC}>
         <LinearGradient
-          colors={["#3C0D3B", "#3C0D3B"]}
+          colors={["#400A3A", "#3C0D3B"]}
           locations={[0, 1]}
           useAngle={true}
           angle={92.11}
           style={{
             flex: 1,
             flexDirection: "row",
-            justifyContent: "space-between",
+            width: metrics.screenWidth,
+            textAlign: "center",
+            justifyContent: "center",
+            position: "relative",
           }}
         >
           <TouchableOpacity
             style={{
               width: 57,
               height: 57,
+              position: "absolute",
+              left: 2,
+              top: 0,
               alignContent: "center",
               alignItems: "center",
               justifyContent: "center",
@@ -52,10 +57,10 @@ const Header = (props) => {
           </TouchableOpacity>
           <View
             style={{
-              width: 300,
               height: 57,
               alignContent: "center",
               alignItems: "center",
+              textAlign: "center",
               justifyContent: "center",
               backgroundColor: "transparent",
             }}
@@ -65,17 +70,8 @@ const Header = (props) => {
                 textAlign: "center",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "transparent",
               }}
             >
-              {/* <Image
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginBottom: 0.1,
-                }}
-                source={Logo}
-              /> */}
               <Text
                 style={{
                   fontSize: 18,
@@ -88,15 +84,6 @@ const Header = (props) => {
               </Text>
             </View>
           </View>
-          <View
-            style={{
-              width: 300,
-              height: 57,
-              alignContent: "center",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          ></View>
         </LinearGradient>
       </View>
     </>
@@ -109,6 +96,9 @@ const styles = StyleSheet.create({
   HeaderC: {
     flexDirection: "column",
     width: "100%",
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
     height: 57,
   },
 });

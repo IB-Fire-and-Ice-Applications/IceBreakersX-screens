@@ -1,14 +1,61 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import { GDialog } from "../PopDialog";
+import { BackHandler, StyleSheet, View } from "react-native";
 import metrics from "../../theme/metrics";
-import { Button, List } from "react-native-paper";
-import SettingsCard from "../Card/SettingsCard";
-import VisaSVG from "../../assets/svg/cc-visa-2.svg";
-import MasterCardSVG from "../../assets/svg/master-card-9.svg";
+import AddPayAcct from "./AddPayAcct";
+import PayAcctList from "./PayAcctList";
+
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useEffect, useRef, useState } from "react";
+import EditPayAcct from "./EditPayAcct";
 
 const PaymentOptContent = (props) => {
-  const [CrdPress, setCrdPress] = useState(false);
+  const [PageView, setPageView] = useState(0);
+  const [AcctType, setAcctType] = useState(0);
+  const [AcctId, setAcctId] = useState(0);
+  const [SnapPointer, setSnapPointer] = useState(["45%", "60%"]);
+  const [DisableHndler, setDisableHndler] = useState(false);
+  const [BottomRad, setBottomRad] = useState(10);
+  const sheetRef = useRef(null);
+  const AddNewPayAcct = (accType) => {
+    setAcctType(accType);
+    setSnapPointer(["100%"]);
+    setDisableHndler(true);
+    setBottomRad(0);
+    setPageView(1);
+  };
+
+  const BackToList = (_statusType) => {
+    setAcctType(0);
+    setPageView(0);
+    setSnapPointer(["40%", "60%"]);
+    setDisableHndler(false);
+    setBottomRad(10);
+  };
+
+  const EditStoredPayAcct = (accType, acctID) => {
+    setAcctType(accType);
+    setAcctId(acctID);
+    setSnapPointer(["100%"]);
+    setDisableHndler(true);
+    setBottomRad(0);
+    setPageView(2);
+  };
+
+  useEffect(() => {
+    const backAction = () => {
+      if (AcctType == 0) {
+        sheetRef.current.close();
+        return true;
+      }
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <>
       <View
@@ -21,179 +68,64 @@ const PaymentOptContent = (props) => {
           height: metrics.screenHeight,
           alignItems: "center",
           width: metrics.screenWidth,
-          backgroundColor: "rgba(0,0,0,.75)",
+          backgroundColor: "rgba(0,0,0,.6)",
         }}
       >
-        <GDialog
-          Detacher={true}
-          DialogCloser={props.setDialogCloserx}
-          BottomInset={0}
-          HorizontalMargin={0}
-        >
-          <View
-            style={{
-              textAlign: "left",
-              flex: 1,
-              height: 40,
-              flexDirection: "row",
-              alignItems: "center",
-              paddingHorizontal: 18,
-              justifyContent: "space-between",
-              marginTop: 23,
-            }}
-          >
-            <View>
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "rgba(255,255,255,.8)",
-                  fontWeight: "bold",
-                }}
-              >
-                {props.DialogTitle}
-              </Text>
-            </View>
+        <BottomSheet
+          enablePanDownToClose={true}
+          ref={sheetRef}
+          onClose={() => props.setDialogCloserx(true)}
+          snapPoints={SnapPointer}
+          style={{
+            marginHorizontal: 0,
+            overflow: "hidden",
+          }}
+          handleComponent={() => (
             <View
-              style={{
-                background: "red",
-              }}
+              className={`${DisableHndler && "hidden"}`}
+              style={styles.closeLineContainer}
             >
-              <Button
-                icon=""
-                textColor="#82ABFE"
-                mode="text"
-                labelStyle={{
-                  fontSize: 17,
-                }}
-                onPress={() => console.log("Pressed")}
-              >
-                Add Card
-              </Button>
+              <View style={styles.closeLine}></View>
             </View>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              marginTop: 25,
-              paddingHorizontal: 15,
-            }}
-          >
-            <SettingsCard
-              touchableAction={false}
-              CardUid={1}
-              PressUAction={setCrdPress}
-            >
-              <List.Item
-                titleStyle={{
-                  color: "#fff",
-                  marginLeft: 55,
-                }}
-                style={{}}
-                descriptionStyle={{
-                  color: "rgba(255,255,255,.4)",
-                  marginLeft: 55,
-                }}
-                title="**** **** **** 4978"
-                description="expires 10/24"
-                left={(props) => (
-                  <View
-                    style={{
-                      position: "absolute",
-                      left: -24,
-                      top: 4,
-                    }}
-                  >
-                    <VisaSVG />
-                  </View>
-                )}
-                right={(props) => (
-                  <View
-                    style={{
-                      flex: 0,
-                      alignItems: "flex-end",
-                      alignContent: "center",
-                      justifyContent: "center",
-                      paddingRight: 7,
-                    }}
-                  >
-                    <Button
-                      icon=""
-                      style={{
-                        padding: 0,
-                        borderRadius: 4,
-                      }}
-                      buttonColor="#3A6BD1"
-                      labelStyle={{
-                        padding: 0,
-                      }}
-                      mode="contained"
-                      onPress={() => console.log("Pressed")}
-                    >
-                      Edit
-                    </Button>
-                  </View>
-                )}
+          )}
+          backgroundComponent={() => (
+            <LinearGradient
+              colors={["#41377E", "#2556B7"]}
+              start={{ x: 1, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[
+                {
+                  alignItems: "center",
+                  flex: 1,
+                  borderRadius: BottomRad,
+                },
+                styles.contentContainer,
+              ]}
+            />
+          )}
+        >
+          <BottomSheetView>
+            {PageView === 0 && (
+              <PayAcctList
+                AcctType={props.AcctType}
+                DialogTitle={props.DialogTitle}
+                AddNewPayAcct={AddNewPayAcct}
+                EditStoredPayAcct={EditStoredPayAcct}
               />
-            </SettingsCard>
-            <SettingsCard
-              touchableAction={false}
-              CardUid={1}
-              PressUAction={setCrdPress}
-            >
-              <List.Item
-                titleStyle={{
-                  color: "#fff",
-                  marginLeft: 55,
-                }}
-                style={{}}
-                descriptionStyle={{
-                  color: "rgba(255,255,255,.4)",
-                  marginLeft: 55,
-                }}
-                title="**** **** **** 2478"
-                description="expires 3/28"
-                left={(props) => (
-                  <View
-                    style={{
-                      position: "absolute",
-                      left: -24,
-                      top: 4,
-                    }}
-                  >
-                    <MasterCardSVG />
-                  </View>
-                )}
-                right={(props) => (
-                  <View
-                    style={{
-                      flex: 0,
-                      alignItems: "flex-end",
-                      alignContent: "center",
-                      justifyContent: "center",
-                      paddingRight: 7,
-                    }}
-                  >
-                    <Button
-                      icon=""
-                      style={{
-                        padding: 0,
-                        borderRadius: 4,
-                      }}
-                      buttonColor="#3A6BD1"
-                      labelStyle={{
-                        padding: 0,
-                      }}
-                      mode="contained"
-                      onPress={() => console.log("Pressed")}
-                    >
-                      Edit
-                    </Button>
-                  </View>
-                )}
+            )}
+            {PageView === 1 && (
+              <AddPayAcct BackToList={BackToList} AcctType={AcctType} />
+            )}
+
+            {PageView === 2 && (
+              <EditPayAcct
+                BackToList={BackToList}
+                AcctType={AcctType}
+                AcctId={AcctId}
               />
-            </SettingsCard>
-          </View>
-        </GDialog>
+            )}
+          </BottomSheetView>
+        </BottomSheet>
       </View>
     </>
   );
@@ -201,4 +133,19 @@ const PaymentOptContent = (props) => {
 
 export default PaymentOptContent;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  contentContainer: {
+    ...StyleSheet.absoluteFillObject,
+    // backgroundColor: "#426ACC",
+  },
+  closeLineContainer: {
+    alignSelf: "center",
+  },
+  closeLine: {
+    width: 40,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: "rgba(255,255,255,.2)",
+    marginTop: 9,
+  },
+});
