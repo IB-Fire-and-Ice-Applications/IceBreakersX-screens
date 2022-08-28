@@ -1,10 +1,10 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
-import Header from "../Header";
 import { LinearGradient } from "expo-linear-gradient";
 import metrics from "../../theme/metrics";
 import { RadioButton } from "react-native-paper";
+import SettingsHeader from "../Headers/SettingsHeader";
 
 const LanguageSettings = ({ navigation: { goBack } }) => {
   const [HeaderBack, setHeaderBack] = useState(false);
@@ -33,7 +33,7 @@ const LanguageSettings = ({ navigation: { goBack } }) => {
           flex: 1,
         }}
       >
-        <Header
+        <SettingsHeader
           BackHeader={true}
           BackNavigator={setHeaderBack}
           title="Preferred Languages"

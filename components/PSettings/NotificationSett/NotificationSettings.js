@@ -11,9 +11,9 @@ import { Switch } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import metrics from "../../../theme/metrics";
 import SettingsCard from "../../Card/SettingsCard";
-import Header from "../../Header";
 import { Octicons } from "@expo/vector-icons";
 import NotiSwitch from "./NotiSwitch";
+import SettingsHeader from "../../Headers/SettingsHeader";
 
 const NotificationSettings = ({ navigation: { goBack } }) => {
   const [HeaderBack, setHeaderBack] = useState(false);
@@ -77,7 +77,7 @@ const NotificationSettings = ({ navigation: { goBack } }) => {
             flex: 1,
           }}
         >
-          <Header
+          <SettingsHeader
             BackHeader={true}
             BackNavigator={setHeaderBack}
             title="Notifications"

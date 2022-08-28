@@ -15,7 +15,7 @@ import Logo from "../../assets/logo/logo-white.png";
 import ScanSVG from "../../assets/svg/scan-15.svg";
 import metrics from "../../theme/metrics";
 import SettingsCard from "../Card/SettingsCard";
-import Header from "../Header";
+import SettingsHeader from "../Headers/SettingsHeader";
 import Drkmode from "./Drkmode";
 
 const SettingsHome = ({ navigation }) => {
@@ -75,7 +75,7 @@ const SettingsHome = ({ navigation }) => {
             flex: 1,
           }}
         >
-          <Header
+          <SettingsHeader
             BackHeader={false}
             BackNavigator={setHeaderBack}
             title="Settings"
