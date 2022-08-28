@@ -9,11 +9,11 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import metrics from "../../theme/metrics";
-import Header from "../Header";
 import { Switch } from "react-native-paper";
 import SettingsCard from "../Card/SettingsCard";
 import { Octicons } from "@expo/vector-icons";
 import ShowMeSet from "./ShowMeSet";
+import SettingsHeader from "../Headers/SettingsHeader";
 
 const ProfileSettings = ({ navigation: { goBack } }) => {
   const [HeaderBack, setHeaderBack] = useState(false);
@@ -67,7 +67,7 @@ const ProfileSettings = ({ navigation: { goBack } }) => {
             flex: 1,
           }}
         >
-          <Header
+          <SettingsHeader
             BackHeader={true}
             BackNavigator={setHeaderBack}
             title="Account Settings"

@@ -7,7 +7,7 @@ import PaypalSVGIc from "../../assets/svg/paypal-26.svg";
 import BitcoinSVG from "../../assets/svg/wrapped-bitcoin-wbtc-icon.svg";
 import metrics from "../../theme/metrics";
 import SettingsCard from "../Card/SettingsCard";
-import Header from "../Header";
+import SettingsHeader from "../Headers/SettingsHeader";
 import PaymentOptContent from "./PaymentOptContent";
 
 const PaymentSettings = ({ navigation: { goBack } }) => {
@@ -89,7 +89,7 @@ const PaymentSettings = ({ navigation: { goBack } }) => {
             flex: 1,
           }}
         >
-          <Header
+          <SettingsHeader
             BackHeader={true}
             BackNavigator={setHeaderBack}
             title="Manage payment account"
